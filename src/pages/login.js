@@ -1,19 +1,20 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Link
+} from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Facebook as FacebookIcon } from '../icons/facebook';
 import { Google as GoogleIcon } from '../icons/google';
 
 const Login = () => {
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123'
+      email: 'hamza@admin.com',
+      password: 'hamzaAdmin'
     },
     validationSchema: Yup.object({
       email: Yup
@@ -30,15 +31,12 @@ const Login = () => {
           'Password is required')
     }),
     onSubmit: () => {
-      router.push('/');
+      Router.push('/');
     }
   });
 
   return (
     <>
-      <Head>
-        <title>Login | Material Kit</title>
-      </Head>
       <Box
         component="main"
         sx={{
@@ -49,9 +47,8 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink
-            href="/"
-            passHref
+          <Link
+            to="/"
           >
             <Button
               component="a"
@@ -59,7 +56,7 @@ const Login = () => {
             >
               Dashboard
             </Button>
-          </NextLink>
+          </Link>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography
@@ -171,11 +168,8 @@ const Login = () => {
             >
               Don&apos;t have an account?
               {' '}
-              <NextLink
-                href="/register"
-              >
-                <Link
-                  to="/register"
+              <Link
+                to="/register"
                   variant="subtitle2"
                   underline="hover"
                   sx={{
@@ -184,7 +178,6 @@ const Login = () => {
                 >
                   Sign Up
                 </Link>
-              </NextLink>
             </Typography>
           </form>
         </Container>

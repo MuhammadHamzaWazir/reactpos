@@ -1,6 +1,8 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Link
+} from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -9,14 +11,12 @@ import {
   Checkbox,
   Container,
   FormHelperText,
-  Link,
   TextField,
   Typography
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Register = () => {
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -56,17 +56,12 @@ const Register = () => {
         )
     }),
     onSubmit: () => {
-      router.push('/');
+      Router.push('/');
     }
   });
 
   return (
     <>
-      <Head>
-        <title>
-          Register | Material Kit
-        </title>
-      </Head>
       <Box
         component="main"
         sx={{
@@ -77,9 +72,8 @@ const Register = () => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink
-            href="/"
-            passHref
+          <Link
+            to="/"
           >
             <Button
               component="a"
@@ -87,7 +81,7 @@ const Register = () => {
             >
               Dashboard
             </Button>
-          </NextLink>
+          </Link>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography
@@ -172,18 +166,14 @@ const Register = () => {
               >
                 I have read the
                 {' '}
-                <NextLink
-                  href="#"
-                  passHref
-                >
-                  <Link
+                <Link
+                  to="#"
                     color="primary"
                     underline="always"
                     variant="subtitle2"
                   >
                     Terms and Conditions
                   </Link>
-                </NextLink>
               </Typography>
             </Box>
             {Boolean(formik.touched.policy && formik.errors.policy) && (
@@ -209,17 +199,13 @@ const Register = () => {
             >
               Have an account?
               {' '}
-              <NextLink
-                href="/login"
-                passHref
-              >
-                <Link
+              <Link
+                to="/login"              
                   variant="subtitle2"
                   underline="hover"
                 >
                   Sign In
                 </Link>
-              </NextLink>
             </Typography>
           </form>
         </Container>

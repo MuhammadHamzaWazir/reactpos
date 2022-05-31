@@ -1,15 +1,10 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
+import React from 'react';
+import {  Link } from "react-router-dom";
 import { Box, Button, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const NotFound = () => (
   <>
-    <Head>
-      <title>
-        404 | Material Kit
-      </title>
-    </Head>
     <Box
       component="main"
       sx={{
@@ -54,7 +49,7 @@ const NotFound = () => (
               }}
             />
           </Box>
-          <NextLink
+          <Link
             href="/"
             passHref
           >
@@ -66,7 +61,7 @@ const NotFound = () => (
             >
               Go back to dashboard
             </Button>
-          </NextLink>
+          </Link>
         </Box>
       </Container>
     </Box>

@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { DashboardNavbar } from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import Dashboard from '../pages/index';
-
+import PropTypes from 'prop-types';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -18,7 +18,6 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 const  DashboardLayout = (props) => {
   const { children } = props;
-  console.log("children is :" + children);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   return (
@@ -32,9 +31,9 @@ const  DashboardLayout = (props) => {
             width: '100%'
           }}
         >
-          {/* {children} */}
+          {children}
           {/* dashboard index start  */}
-         <Dashboard />
+         {/* <Dashboard /> */}
           {/* dashboard index end  */}
 
         </Box>
@@ -47,5 +46,6 @@ const  DashboardLayout = (props) => {
     </>
   );
 };
+
 
 export default DashboardLayout;
