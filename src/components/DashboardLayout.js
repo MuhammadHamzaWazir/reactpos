@@ -3,8 +3,7 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DashboardNavbar } from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
-import Dashboard from '../pages/index';
-import PropTypes from 'prop-types';
+import { SidebarProvider } from './Context/SidebarContext';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -18,10 +17,11 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 const  DashboardLayout = (props) => {
   const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
+      <SidebarProvider>
       <DashboardLayoutRoot>
         <Box
           sx={{
@@ -32,17 +32,14 @@ const  DashboardLayout = (props) => {
           }}
         >
           {children}
-          {/* dashboard index start  */}
-         {/* <Dashboard /> */}
-          {/* dashboard index end  */}
-
         </Box>
       </DashboardLayoutRoot>
       <DashboardNavbar onSidebarOpen={() => setSidebarOpen(true)} />
       <DashboardSidebar
         onClose={() => setSidebarOpen(false)}
         open={isSidebarOpen}
-      />
+        />
+        </SidebarProvider>
     </>
   );
 };

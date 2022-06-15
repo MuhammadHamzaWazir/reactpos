@@ -1,39 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   BrowserRouter as Router,
   Link
 } from "react-router-dom";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Facebook as FacebookIcon } from '../icons/facebook';
-import { Google as GoogleIcon } from '../icons/google';
 
-const Login = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: 'hamza@admin.com',
-      password: 'hamzaAdmin'
-    },
-    validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email(
-          'Must be a valid email')
-        .max(255)
-        .required(
-          'Email is required'),
-      password: Yup
-        .string()
-        .max(255)
-        .required(
-          'Password is required')
-    }),
-    onSubmit: () => {
-      Router.push('/');
-    }
-  });
+async function loginUser(credentials) {
+ return await fetch('http://127.0.0.1:8000/api/login', {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(credentials)
+ })
+   .then(data => data.json()).then(data => data)
+   .catch(error => console.log(error))
+}
+
+const Login = ({ setToken }) => {
+  const [email, setUserEmail] = useState();
+  const [password, setPassword] = useState();
+  const [isSubmitting, setSubmitting] = useState(false);
+  
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setSubmitting(true);
+    const token = await loginUser({
+      email,
+      password
+    });
+    localStorage.setItem('user', JSON.stringify(token.user))
+    localStorage.setItem('token', token.token)
+    setToken(token.token);
+  }
+
 
   return (
     <>
@@ -47,17 +49,7 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
-          <Link
-            to="/"
-          >
-            <Button
-              component="a"
-              startIcon={<ArrowBackIcon fontSize="small" />}
-            >
-              Dashboard
-            </Button>
-          </Link>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography
                 color="textPrimary"
@@ -73,43 +65,7 @@ const Login = () => {
                 Sign in on the internal platform
               </Typography>
             </Box>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                item
-                xs={12}
-                md={6}
-              >
-                <Button
-                  color="info"
-                  fullWidth
-                  startIcon={<FacebookIcon />}
-                  onClick={formik.handleSubmit}
-                  size="large"
-                  variant="contained"
-                >
-                  Login with Facebook
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-              >
-                <Button
-                  fullWidth
-                  color="error"
-                  startIcon={<GoogleIcon />}
-                  onClick={formik.handleSubmit}
-                  size="large"
-                  variant="contained"
-                >
-                  Login with Google
-                </Button>
-              </Grid>
-            </Grid>
+            
             <Box
               sx={{
                 pb: 1,
@@ -125,35 +81,29 @@ const Login = () => {
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
+              error=""
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
               label="Email Address"
               margin="normal"
               name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={e => setUserEmail(e.target.value)}
               type="email"
-              value={formik.values.email}
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.password && formik.errors.password)}
+              error=""
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
               label="Password"
               margin="normal"
               name="password"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={e => setPassword(e.target.value)}
               type="password"
-              value={formik.values.password}
               variant="outlined"
             />
             <Box sx={{ py: 2 }}>
               <Button
                 color="primary"
-                disabled={formik.isSubmitting}
+                disabled={isSubmitting}
                 fullWidth
                 size="large"
                 type="submit"
@@ -187,3 +137,6 @@ const Login = () => {
 };
 
 export default Login;
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
+};
